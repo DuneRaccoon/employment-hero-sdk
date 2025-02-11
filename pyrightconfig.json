@@ -1,0 +1,17 @@
+{
+    "include": ["."],
+    "strict": [
+        "returnType",
+        "argument",
+        "classAttribute",
+        "class",
+        "method",
+        "none"
+    ],
+    "pythonVersion": "3.11",
+    "ignore": [
+        "**/tests/**"
+    ],
+    "reportAttributeAccessIssue": "none",
+    "reportIncompatibleMethodOverride": "none",
+}
