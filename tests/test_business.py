@@ -1,5 +1,5 @@
 import pytest
-from ..employment_hero_sdk.apis.business import BusinessManager, Business
+from employment_hero_sdk.apis.business import BusinessManager, Business
 
 # Dummy response class to simulate httpx.Response
 class DummyResponse:

@@ -1,5 +1,5 @@
 import pytest
-from ..employment_hero_sdk.client import EmploymentHeroClient
+from employment_hero_sdk.client import EmploymentHeroClient
 
 # def test_client_no_api_key():
 #     with pytest.raises(ValueError):
