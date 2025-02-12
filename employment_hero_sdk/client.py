@@ -50,7 +50,7 @@ class EmploymentHeroClient:
         if redis_url:
             self.storage = RedisLeakyBucketStorage(
                 Redis(redis_url),
-                redis_key="harmony-api-throttler",
+                redis_key="eh-api-throttler",
                 max_rate=throttler_leak_rate,
                 time_period=throttler_period
             )

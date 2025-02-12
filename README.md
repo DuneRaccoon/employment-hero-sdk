@@ -65,6 +65,27 @@ async def main():
 asyncio.run(main())
 ```
 
+### Dynamic Paths
+
+We also dynamically load paths if there isn't an api model for the path, which will return data if the path exists. The data will just be returned as a dictionary.
+
+```python
+from employment_hero_sdk import EmploymentHeroClient
+
+EMPLOYMENT_HERO_API_KEY = "api_key"
+
+client = EmploymentHeroClient(api_key=EMPLOYMENT_HERO_API_KEY)
+
+for business in client.business().values():
+    print(business.show())
+    for employee in business.employee():
+        print(employee.show())
+        opening_balances = employee.openingbalances() #/api/v2/business/{busness_id}/employee/{employee_id}/openingbalances is a valid path
+        print(opening_balances)
+        break
+```
+
+
 ## License
 
 This project is licensed under the [Creative Commons Attribution-NonCommercial 4.0 International License](http://creativecommons.org/licenses/by-nc/4.0/). 
