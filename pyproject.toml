@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Efficiently interact with the Employment Hero/Key Pay API"
 authors = ["duneraccoon <benjamincsherro@hotmail.com>"]
 readme = "README.md"
+license = "CC BY-NC 4.0"
 packages = [{ include = "employment_hero_sdk" }]
 
 [tool.poetry.dev-dependencies]

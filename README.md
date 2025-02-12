@@ -64,3 +64,8 @@ async def main():
 
 asyncio.run(main())
 ```
+
+## License
+
+This project is licensed under the [Creative Commons Attribution-NonCommercial 4.0 International License](http://creativecommons.org/licenses/by-nc/4.0/). 
+You are free to use, share, and modify the software for **non-commercial purposes** only.
