@@ -109,7 +109,7 @@ class BusinessManager:
         self._cache_timestamp = current_time
         return self._cache
 
-    def get(self, business_id: str) -> Business:
+    def get(self, business_id: Union[str, int]) -> Business:
         """Return the business with the given ID (from cache or fetched list)."""
         businesses = self.all()
         biz = businesses.get(business_id)
@@ -118,7 +118,7 @@ class BusinessManager:
         # Optionally, attempt a direct GET on /v2/business/{business_id} here.
         raise ValueError(f"Business with id '{business_id}' not found.")
 
-    def __call__(self, business_id: Optional[str] = None):
+    def __call__(self, business_id: Optional[Union[str, int]] = None):
         """
         When the BusinessManager is called:
           - With no argument, returns a coroutine that resolves to the list of businesses.
@@ -174,7 +174,7 @@ class AsyncBusinessManager:
         self._cache_timestamp = current_time
         return self._cache
 
-    async def get(self, business_id: str) -> Business:
+    async def get(self, business_id: Union[str, int]) -> Business:
         """Return the business with the given ID (from cache or fetched list)."""
         businesses = await self.all()
         biz = businesses.get(business_id)
@@ -183,7 +183,7 @@ class AsyncBusinessManager:
         # Optionally, attempt a direct GET on /v2/business/{business_id} here.
         raise ValueError(f"Business with id '{business_id}' not found.")
 
-    def __call__(self, business_id: Optional[str] = None):
+    def __call__(self, business_id: Optional[Union[str, int]] = None):
         """
         When the BusinessManager is called:
           - With no argument, returns a coroutine that resolves to the list of businesses.

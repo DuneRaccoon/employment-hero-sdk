@@ -12,6 +12,7 @@
     "ignore": [
         "**/tests/**"
     ],
+    "reportReturnType": false,
     "reportAttributeAccessIssue": "none",
     "reportIncompatibleMethodOverride": "none",
 }

@@ -62,7 +62,8 @@ class EmploymentHeroBase:
     def _parse_response_data(
         response: Union[List[Any], Dict[str, Any]]
     ) -> List[Dict[str, Any]]:
-        return response if isinstance(response, list) else [response]
+        responses = response if isinstance(response, list) else [response]
+        return [deserialize(item) for item in responses]
 
     def _build_url(self, resource_id: Optional[Any] = None, suffix: str = "") -> str:
         if not self.parent_path:

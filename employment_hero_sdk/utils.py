@@ -1,4 +1,6 @@
 import re
+import datetime
+from typing import Any
 
 
 def to_camel_case(snake_str: str) -> str:
@@ -28,16 +30,28 @@ def pascal_to_snake_case(pascal_str: str) -> str:
     return re.sub(r'(?<!^)(?=[A-Z])', '_', pascal_str).lower()
 
 def serialize(data):
-    """
-    Placeholder for any custom serialization logic.
-    For now, simply return the data unchanged.
-    """
+    """Serialization logic for dictionaries, lists, and strings."""
+    if isinstance(data, dict):
+        return {k: serialize(v) for k, v in data.items()}
+    if isinstance(data, (list, tuple)):
+        return [serialize(item) for item in data]
+    if isinstance(data, datetime.datetime):
+        return data.isoformat()
     return data
 
-
-def deserialize(data):
-    """
-    Placeholder for any custom deserialization logic.
-    For now, simply return the data unchanged.
-    """
+def deserialize(data: Any):
+    """Deserialization logic for dictionaries, lists, and strings."""
+    if isinstance(data, list):
+        return [deserialize(item) for item in data]
+    if isinstance(data, dict):
+        return {k: deserialize(v) for k, v in data.items()}
+    if isinstance(data, str):
+        if data.lower() == 'true':
+            return True
+        if data.lower() == 'false':
+            return False
+        try:
+            return datetime.datetime.fromisoformat(data)
+        except ValueError:
+            return data
     return data
