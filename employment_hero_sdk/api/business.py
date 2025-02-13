@@ -2,7 +2,6 @@ import time
 from typing import List, Optional, Union, Dict, Any
 from .base import EmploymentHeroBase
 from ..client import EmploymentHeroClient, EmploymentHeroAsyncClient
-from ..utils import snake_to_pascal_case, pascal_to_snake_case
 
 class Business(EmploymentHeroBase):
     pass
@@ -61,7 +60,7 @@ class BusinessManager:
           - With a business id, returns a coroutine that resolves to that specific business.
           
         Usage:
-            businesses = client.business()         # list all businesses (cached)
+            businesses = client.business()            # list all businesses (cached)
             biz = client.business("biz123")           # get a specific business
         """
         if business_id is None:
@@ -126,7 +125,7 @@ class AsyncBusinessManager:
           - With a business id, returns a coroutine that resolves to that specific business.
           
         Usage:
-            businesses = await client.business()         # list all businesses (cached)
+            businesses = await client.business()            # list all businesses (cached)
             biz = await client.business("biz123")           # get a specific business
         """
         if business_id is None:

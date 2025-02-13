@@ -1,6 +1,16 @@
-# pyright: reportAttributeAccessIssue=false
-from typing import Any, Dict, List, Optional, Type, TypeVar, Union, Coroutine, Generator, AsyncGenerator
-
+import pandas as pd
+from typing import (
+    Any, 
+    Dict, 
+    List, 
+    Optional, 
+    Type, 
+    TypeVar,
+    Union,
+    Coroutine,
+    Generator,
+    AsyncGenerator
+)
 from ..utils import serialize, deserialize, snake_to_pascal_case
 from ..client import EmploymentHeroClient, EmploymentHeroAsyncClient
 
@@ -55,15 +65,20 @@ class EmploymentHeroBase:
             api_class = getattr(module, snake_to_pascal_case(item))
             return api_class(client=self.client, parent=self, parent_path=self._build_url(self.id))
         except (ModuleNotFoundError, AttributeError):
+            # split snake case item into a path e.g. report_birthday -> report/birthday
+            item = "/".join(item.split("_"))
+            
             # If no module exists for this attribute and model has an id, then assume the attribute
             # is a valid endpoint suffix. Return a callable that makes a GET request.
             # If it isn't valid, it'll just return a 404.
-            def dynamic_endpoint(*args, **kwargs):
+            def dynamic_endpoint(*args, dataframe: bool = False, **kwargs):
+                """:param dataframe: If True, return a DataFrame instead of a list of dictionaries."""
                 url = self._build_url(resource_id=self.id, suffix=item)
                 if isinstance(self.client, EmploymentHeroClient):
                     response = self.client._request("GET", url, params=kwargs)
                     data = self._parse_response_data(response.json())
-                    # You can optionally wrap the returned data in an instance of a specific class.
+                    if dataframe:
+                        return pd.DataFrame(data)
                     return data
                 else:
                     async def async_endpoint():

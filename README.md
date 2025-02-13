@@ -67,9 +67,12 @@ asyncio.run(main())
 
 ### Dynamic Paths
 
-We also dynamically load paths if there isn't an api model for the path, which will return data if the path exists. The data will just be returned as a dictionary.
+We also dynamically load paths if there isn't an api model for the path, which will return data if the path exists.
+
+The data can be returned as a list of dictionaries or as a pandas DataFrame if `dataframe=True` is passed as a keyword argument.
 
 ```python
+import datetime
 from employment_hero_sdk import EmploymentHeroClient
 
 EMPLOYMENT_HERO_API_KEY = "api_key"
@@ -83,8 +86,19 @@ for business in client.business().values():
         opening_balances = employee.openingbalances() #/api/v2/business/{busness_id}/employee/{employee_id}/openingbalances is a valid path
         print(opening_balances)
         break
-```
 
+    # or snake case will split into a path e.g. report_birthday -> report/birthday?{kwargs}
+    birthday_report = business.report_birthday(fromDate=datetime.date(day=1, month=1, year=2025), toDate=datetime.date.today())
+
+    # or include dataframe=True to return a pandas dataframe
+    timesheet_report_df = business.report_timesheet(
+        dataframe=True,
+        **{
+            'request.fromDate': datetime.date(day=1, month=1, year=2025), 
+            'request.toDate': datetime.date.today()
+        }
+    )
+```
 
 ## License
 
