@@ -112,13 +112,13 @@ class EmploymentHeroClient:
 
     def __getattr__(self, item: str):
         """
-        Dynamically load an API wrapper from the `apis` subpackage.
+        Dynamically load an API wrapper from the `api` subpackage.
         For example, accessing `client.employee` will load the Employee API wrapper.
         For multi-word API classes, use snake_case (e.g. `client.pay_run` -> PayRun).
         """
         try:
             base_package = self.__class__.__module__.split(".")[0]
-            module = import_module(f"{base_package}.apis.{item.lower()}")
+            module = import_module(f"{base_package}.api.{item.lower()}")
             # Expect the API class to have the same name but capitalized.
             api_class = getattr(module, snake_to_pascal_case(item))
             return api_class(client=self)
@@ -133,7 +133,7 @@ class EmploymentHeroClient:
         • Calling client.business(business_id) enters a specific business context.
         """
         if not self._business_manager:
-            from .apis.business import BusinessManager
+            from .api.business import BusinessManager
             self._business_manager = BusinessManager(client=self)
         return self._business_manager
 
@@ -199,6 +199,6 @@ class EmploymentHeroAsyncClient(EmploymentHeroClient):
         • Calling client.business(business_id) enters a specific business context.
         """
         if not self._business_manager:
-            from .apis.business import AsyncBusinessManager
+            from .api.business import AsyncBusinessManager
             self._business_manager = AsyncBusinessManager(client=self)
         return self._business_manager

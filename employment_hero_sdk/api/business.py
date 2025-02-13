@@ -5,71 +5,7 @@ from ..client import EmploymentHeroClient, EmploymentHeroAsyncClient
 from ..utils import snake_to_pascal_case, pascal_to_snake_case
 
 class Business(EmploymentHeroBase):
-    """
-    Represents a specific business in the Employment Hero API.
-    Once in a business context, you may chain additional endpoints (e.g. employees, locations, etc.)
-    under the business' base path.
-    """
-    def __init__(
-        self,
-        business_id: Any,
-        *args, 
-        **kwargs
-    ):
-        super().__init__(*args, **kwargs)
-        self.business_id = business_id
-
-    @property
-    def base_path(self) -> str:
-        return f"/api/v2/business/{self.business_id}"
-
-    def __getattr__(self, item: str):
-        # Dynamically load a chained endpoint under this business.
-        from importlib import import_module
-        try:
-            base_package = self.client.__class__.__module__.split(".")[0]
-            module = import_module(f"{base_package}.apis.{item.lower()}")
-            api_class = getattr(module, snake_to_pascal_case(item))
-            return api_class(client=self.client, parent_path=self.base_path)
-        except (ModuleNotFoundError, AttributeError):
-            raise AttributeError(f"No such endpoint '{item}' in business context.")
-
-    def fetch(self) -> "Business":
-        """
-        Optionally, fetch business details using its business_id.
-        """
-        if not isinstance(self.client, EmploymentHeroClient):
-            raise ValueError("This method requires an sync client.")
-        
-        url = f"/api/v2/business/{self.business_id}"
-        response = self.client._request("GET", url)
-        response_data = self._parse_response_data(response.json())
-        if len(response_data) == 0:
-            raise ValueError(f"Business with id '{self.business_id}' not found.") 
-        if len(response_data) > 1:
-            raise ValueError(f"Multiple businesses with id '{self.business_id}' found.")
-        self.data = response_data[0]
-        return self
-    
-    async def fetch_async(self) -> "Business":
-        """
-        Optionally, fetch business details using its business_id.
-        """
-        if not isinstance(self.client, EmploymentHeroAsyncClient):
-            raise ValueError("This method requires an async client.")
-        
-        url = f"/api/v2/business/{self.business_id}"
-        response = await self.client._request("GET", url)
-        response_data = self._parse_response_data(response.json())
-        if len(response_data) == 0:
-            raise ValueError(f"Business with id '{self.business_id}' not found.") 
-        if len(response_data) > 1:
-            raise ValueError(f"Multiple businesses with id '{self.business_id}' found.")
-        self.data = response_data[0]
-        return self
-
-    def __repr__(self):
-        return f"<Business id={self.business_id}>"
+    pass
 
 class BusinessManager:
     """
@@ -100,9 +36,9 @@ class BusinessManager:
         url = "/api/v2/business"
         response = self.client._request("GET", url, params=params)
         self._cache = {
-            business.business_id: business
+            business.id: business
             for business in [
-                Business(client=self.client, business_id=item.get("id"), data=item)
+                Business(client=self.client, data=item, parent_path="/api/v2")
                 for item in self._handle_list_response(response.json())
             ]
         }
@@ -165,9 +101,9 @@ class AsyncBusinessManager:
         data = response.json()
         data_list = data if isinstance(data, list) else response.json().get("data", [])
         self._cache = {
-            business.business_id: business
+            business.id: business
             for business in [
-                Business(client=self.client, business_id=item.get("id"), data=item)
+                Business(client=self.client, data=item, parent_path="/api/v2")
                 for item in self._handle_list_response(response.json())
             ]
         }

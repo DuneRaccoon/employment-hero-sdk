@@ -30,7 +30,7 @@ class EmploymentHeroBase:
         client: Union[EmploymentHeroClient, EmploymentHeroAsyncClient],
         data: Optional[Dict[str, Any]] = None,
         parent: Optional["EmploymentHeroBase"] = None,
-        parent_path: Optional[str] = None  # e.g. "/v2/business/{business_id}",
+        parent_path: Optional[str] = None  # e.g. "/api/v2/business/{business_id}",
     ) -> None:
         self.client = client
         self.data: Dict[str, Any] = data or {}
@@ -42,18 +42,19 @@ class EmploymentHeroBase:
         if item in self.data:
             return self.data[item]
 
+        if not getattr(self, 'id', None):
+            raise AttributeError(f"No such attribute '{item}' in {self.__class__.__name__} context.")
+            
         from importlib import import_module
         base_package = self.client.__class__.__module__.split(".")[0]
 
         # try to load an API module for this attribute.
         try:
-            module = import_module(f"{base_package}.apis.{item.lower()}")
+            module = import_module(f"{base_package}.api.{item.lower()}")
             # we define modules in pascal case, but refer to them as attributes in snake case.
             api_class = getattr(module, snake_to_pascal_case(item))
-            return api_class(client=self.client, parent=self, parent_path=self.base_path)
+            return api_class(client=self.client, parent=self, parent_path=self._build_url(self.id))
         except (ModuleNotFoundError, AttributeError):
-            if not getattr(self, 'id', None):
-                raise AttributeError(f"No such attribute '{item}' in {self.__class__.__name__} context.")
             # If no module exists for this attribute and model has an id, then assume the attribute
             # is a valid endpoint suffix. Return a callable that makes a GET request.
             # If it isn't valid, it'll just return a 404.
