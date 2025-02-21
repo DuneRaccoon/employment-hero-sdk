@@ -1,5 +1,6 @@
 from typing import Any, Dict
 from .base import EmploymentHeroBase
+from ..models import AuUnstructuredEmployeeModel
 
 class Employee(EmploymentHeroBase):
     """
@@ -8,12 +9,14 @@ class Employee(EmploymentHeroBase):
       {parent_path}/employee
     For example: /v2/business/{business_id}/employee
     """
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.model = AuUnstructuredEmployeeModel(**self.data)
 
     @property
     def full_name(self) -> str:
-        first = self.data.get("firstName", "")
-        last = self.data.get("surname", "")
-        return f"{first} {last}".strip()
+        return f"{self.model.firstName} {self.model.surname}".strip()
 
     async def grant_access(self, email: str, name: str) -> Dict[str, Any]:
         """Example method to grant access to an employee."""

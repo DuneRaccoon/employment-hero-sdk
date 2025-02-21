@@ -44,6 +44,7 @@ class EmploymentHeroBase:
     ) -> None:
         self.client = client
         self.data: Dict[str, Any] = data or {}
+        self.model = None
         self.parent: Optional["EmploymentHeroBase"] = parent
         self.parent_path: Optional[str] = parent_path
 

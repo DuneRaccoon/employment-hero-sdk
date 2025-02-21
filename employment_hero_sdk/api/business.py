@@ -2,9 +2,12 @@ import time
 from typing import List, Optional, Union, Dict, Any
 from .base import EmploymentHeroBase
 from ..client import EmploymentHeroClient, EmploymentHeroAsyncClient
+from ..models import AuBusinessExportModel
 
 class Business(EmploymentHeroBase):
-    pass
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.model = AuBusinessExportModel(**self.data)
 
 class BusinessManager:
     """
