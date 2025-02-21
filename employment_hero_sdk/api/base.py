@@ -124,7 +124,8 @@ class EmploymentHeroBase:
         response: Union[List[Any], Dict[str, Any]]
     ) -> List[Dict[str, Any]]:
         responses = response if isinstance(response, list) else [response]
-        return [deserialize(item) for item in responses]
+        return responses
+        # return [deserialize(item) for item in responses]
     
     @property
     def base_path(self) -> str:
