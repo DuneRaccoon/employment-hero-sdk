@@ -1,5 +1,8 @@
 # Employment Hero SDK
 
+[![PyPI version](https://badge.fury.io/py/employment-hero-sdk.svg)](https://badge.fury.io/py/employment-hero-sdk)
+[![License: CC BY-NC 4.0](https://img.shields.io/badge/license-CC--BY--NC--SA--4.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/deed.en)
+
 Simple, lightweight and efficient Python client wrapper for interacting with the Employment Hero/Key Pay API. It provides a consistent, chainable interface for both synchronous and asynchronous operations, making it easy to fetch, create, update, and delete resources....
 
 ## Features
