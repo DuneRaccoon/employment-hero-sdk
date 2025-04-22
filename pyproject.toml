@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "employment-hero-sdk"
-version = "0.1.11"
+version = "0.1.13"
 description = "Efficiently interact with the Employment Hero/Key Pay API"
 authors = ["duneraccoon <benjamincsherro@hotmail.com>"]
 readme = "README.md"
@@ -25,3 +25,6 @@ datamodel-code-generator = "^0.28.1"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.urls]
+Source = "https://github.com/DuneRaccoon/employment-hero-sdk"
