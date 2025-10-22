@@ -6,7 +6,7 @@ from .employment_agreement import EmploymentAgreement
 from .report import Report
 from .pay_run import PayRun
 from .timesheet import Timesheet
-from .webhook import Webhook
+from .webhook import Webhook, WebhookEvents
 
 __all__ = [
     "Employee", 
@@ -15,5 +15,6 @@ __all__ = [
     "Report",
     "PayRun",
     "Timesheet",
-    "Webhook"
+    "Webhook",
+    "WebhookEvents"
 ]
